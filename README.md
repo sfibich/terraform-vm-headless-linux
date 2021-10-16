@@ -22,16 +22,16 @@ This project is expected to be used in conjunction with the [terraform-azure-boo
 
 The following would prompt to approve the plan and use the default password provided in the variables file.  This is not recommended as the password is exposed in this repository.
 
-`
+```
 source ../terraform-azure-bootstrap/TerraformAzureBootstrap.sh -f env/dev.tfvars
 terraform apply
-`
+```
 
 ### Example 2:
 
 The following would automatically approve the plan and use the password N3wP@ssw0rd inplace of the default password provided in the variables file.
 
-`
+```
 source ../terraform-azure-bootstrap/TerraformAzureBootstrap.sh -f env/dev.tfvars
 terraform apply --auto-approve -var="password=N3wP@ssw0rd"
-`
+```
