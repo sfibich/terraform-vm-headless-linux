@@ -2,6 +2,8 @@
 
 This terraform script creates an Azure Debian 11 with all the bells and whistles need to be the perfect headless workstation.
 
+[terraform-vm-headless-linux](terraform-vm-headless-linux.png)
+
 ## Configuration and Installed Software:
 
 * set time zone to America/New_York
