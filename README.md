@@ -17,7 +17,7 @@ This terraform script creates an Azure Debian 11 with all the bells and whistles
 ## Azure Configuration
 
 ## Examples
-This project is expected to be used in conjunction with the terraform-azure-bootstrap projects TerraformAzureBootstrap.sh script.	
+This project is expected to be used in conjunction with the [terraform-azure-bootstrap](https://github.com/sfibich/terraform-azure-bootstrap) project's TerraformAzureBootstrap.sh script.	
 ### Example 1:
 
 The following would prompt to approve the plan and use the default password provided in the variables file.  This is not recommended as the password is exposed in this repository.
