@@ -1,9 +1,6 @@
 # Configure the Azure provider
 terraform {
-  backend "azurerm" {
-    container_name       = "terraform-state"
-    key                  = "terraform.tfstate.shellStationUbuntu"
-  }
+  backend "azurerm" {}
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
@@ -12,7 +9,6 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = var.target_subscription_id
   features {}
 }
 

@@ -17,13 +17,14 @@ This terraform script creates an Azure Debian 11 with all the bells and whistles
 ## Azure Configuration
 
 ## Examples
-
+This project is expected to be used in conjunction with the terraform-azure-bootstrap projects TerraformAzureBootstrap.sh script.	
 ### Example 1:
 
 The following would prompt to approve the plan and use the default password provided in the variables file.  This is not recommended as the password is exposed in this repository.
 
 `
-terraform apply --var-file env/prod.tfvars
+source ../terraform-azure-bootstrap/TerraformAzureBootstrap.sh -f env/dev.tfvars
+terraform apply
 `
 
 ### Example 2:
@@ -31,5 +32,6 @@ terraform apply --var-file env/prod.tfvars
 The following would automatically approve the plan and use the password N3wP@ssw0rd inplace of the default password provided in the variables file.
 
 `
-terraform apply --auto-approve --var-file env/prod.tfvars -var="password=N3wP@ssw0rd"
+source ../terraform-azure-bootstrap/TerraformAzureBootstrap.sh -f env/dev.tfvars
+terraform apply --auto-approve -var="password=N3wP@ssw0rd"
 `
