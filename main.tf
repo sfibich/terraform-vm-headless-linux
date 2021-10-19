@@ -3,9 +3,9 @@ resource "random_pet" "server" {
 }
 
 resource "random_string" "suffix" {
-  length = 5
+  length  = 5
   special = false
-  upper = false
+  upper   = false
 }
 
 resource "azurerm_resource_group" "main" {
@@ -15,16 +15,16 @@ resource "azurerm_resource_group" "main" {
 
 resource "azurerm_virtual_network" "main" {
   name                = "${var.prefix}-network"
-  address_space       = ["10.0.0.0/16"]
+  address_space       = ["192.168.0.0/18"]
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 }
 
-resource "azurerm_subnet" "internal" {
-  name                 = "internal"
+resource "azurerm_subnet" "workstation" {
+  name                 = "workstation"
   resource_group_name  = azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["192.168.0.0/27"]
 }
 
 resource "azurerm_public_ip" "pip" {
@@ -42,14 +42,14 @@ resource "azurerm_network_interface" "main" {
 
   ip_configuration {
     name                          = "primary"
-    subnet_id                     = azurerm_subnet.internal.id
+    subnet_id                     = azurerm_subnet.workstation.id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.pip.id
   }
 }
 
 resource "azurerm_network_security_group" "access" {
-  name                = "${var.prefix}-machine-access"
+  name                = "${var.prefix}-workstation-access"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   security_rule {
@@ -67,12 +67,12 @@ resource "azurerm_network_security_group" "access" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "main" {
-  subnet_id      = azurerm_subnet.internal.id
+  subnet_id                 = azurerm_subnet.workstation.id
   network_security_group_id = azurerm_network_security_group.access.id
 }
 
 resource "azurerm_linux_virtual_machine" "main" {
-  name                            = "${var.prefix}-${var.machine_number}-vm"
+  name                            = "${var.prefix}-${var.machine_number}-ws"
   resource_group_name             = azurerm_resource_group.main.name
   location                        = azurerm_resource_group.main.location
   size                            = "Standard_B1s"
@@ -82,7 +82,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   network_interface_ids = [
     azurerm_network_interface.main.id
   ]
-  boot_diagnostics  {
+  boot_diagnostics {
     storage_account_uri = null
   }
 
@@ -97,8 +97,8 @@ resource "azurerm_linux_virtual_machine" "main" {
   }
 
   os_disk {
-    storage_account_type = "Standard_LRS"
-    caching              = "ReadWrite"
+    storage_account_type   = "Standard_LRS"
+    caching                = "ReadWrite"
     disk_encryption_set_id = azurerm_disk_encryption_set.vm.id
   }
 }
