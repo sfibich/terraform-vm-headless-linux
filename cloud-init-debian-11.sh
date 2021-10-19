@@ -17,6 +17,7 @@ echo "cloud init start" >> /tmp/cloud-init.log
 date >> /tmp/cloud-init.log
 cd /home/$user_name
 mkdir installs
+mkdir repos
 echo "complete: home setup" >> /tmp/cloud-init.log
 sudo apt-get update -y 
 sudo apt-get upgrade -y 
@@ -126,21 +127,21 @@ sudo apt-get install python3.9-doc -y
 
 
 ############################
-# Work in Progress below   #
-############################
-
-
-############################
 # Git Pulls                #
 ############################
-echo "complete: git"
 wget https://raw.githubusercontent.com/sfibich/config/master/.vimrc
 sudo chown $user_name:$user_name .vimrc
-echo "complete: shellStation" >> /tmp/cloud-init.log
+git clone https://github.com/sfibich/config.git repos/config
+git clone https://github.com/sfibich/terraform-azure-bootstrap.git repos/terraform-azure-bootstrap
+git clone https://github.com/sfibich/terraform-vm-headless-linux.git repos/terraform-vm-headless-linux
+git clone https://github.com/sfibich/funWithTerraform.git repos/funWithTerraform
+
+echo "complete: git" >> /tmp/cloud-init.log
 
 ############################
 # finish cloud init        #
 ############################
+sudo chown -R $user_name:$user_name repos
 sudo chown -R $user_name:$user_name installs
 sudo apt-get autoremove -y 
 

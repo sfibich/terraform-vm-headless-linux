@@ -8,6 +8,7 @@ resource "azurerm_key_vault" "vm_kv" {
   sku_name                    = "premium"
   enabled_for_disk_encryption = true
   purge_protection_enabled    = true
+  tags                        = local.main_tags
 }
 
 resource "azurerm_key_vault_key" "vm_kv" {
@@ -39,6 +40,7 @@ resource "azurerm_disk_encryption_set" "vm" {
   identity {
     type = "SystemAssigned"
   }
+  tags = local.main_tags
 }
 
 resource "azurerm_key_vault_access_policy" "example-disk" {

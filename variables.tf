@@ -9,6 +9,10 @@ variable "machine_number" {
   description = "unique machine number to be a suffix to the overall machine name and resource group"
 }
 
+variable "allowed_list_ips" {
+  description = "The IP addresses that will be allowed to talk to the workstation controlled by the NSG; simple comma-delimited list"
+}
+
 variable "location" {
   type        = string
   description = "The Azure Region in which all resources in this module"
@@ -24,3 +28,33 @@ variable "password" {
   type    = string
   default = "P@ssw0rd1234!"
 }
+
+# Standard Tags
+
+variable "tags" {
+  default = {
+    project = "terraform-vm-headless-linux"
+  }
+  description = "The generic tags for this project that go on all resources"
+  type        = map(string)
+
+}
+
+variable "env_tags" {
+  default     = {}
+  description = "Environment specific tags"
+  type        = map(string)
+}
+
+variable "state_container_name" {
+  default     = ""
+  description = "Used by the boostrap shell script but provide here incase it is needed, in the output by default"
+  type        = string
+}
+
+variable "state_key" {
+  default     = ""
+  description = "Used by the bootstrap shell script but provided here incase it is needed, in the output by default"
+  type        = string
+}
+
