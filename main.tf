@@ -1,11 +1,15 @@
 
 resource "random_pet" "server" {
-  prefix = "shellStation"
+}
 
+resource "random_string" "suffix" {
+  length = 5
+  special = false
+  upper = false
 }
 
 resource "azurerm_resource_group" "main" {
-  name     = "${var.prefix}-resources"
+  name     = "${var.prefix}-${var.machine_number}-rg"
   location = var.location
 }
 
@@ -68,7 +72,7 @@ resource "azurerm_subnet_network_security_group_association" "main" {
 }
 
 resource "azurerm_linux_virtual_machine" "main" {
-  name                            = "${var.prefix}-vm"
+  name                            = "${var.prefix}-${var.machine_number}-vm"
   resource_group_name             = azurerm_resource_group.main.name
   location                        = azurerm_resource_group.main.location
   size                            = "Standard_B1s"
@@ -78,6 +82,10 @@ resource "azurerm_linux_virtual_machine" "main" {
   network_interface_ids = [
     azurerm_network_interface.main.id
   ]
+  boot_diagnostics  {
+    storage_account_uri = null
+  }
+
 
   custom_data = base64encode(file("cloud-init-debian-11.sh"))
 
@@ -91,5 +99,6 @@ resource "azurerm_linux_virtual_machine" "main" {
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
+    disk_encryption_set_id = azurerm_disk_encryption_set.vm.id
   }
 }

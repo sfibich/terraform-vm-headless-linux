@@ -4,6 +4,11 @@ variable "prefix" {
 	default = "debian"
 }
 
+variable "machine_number" {
+  type = string
+  description = "unique machine number to be a suffix to the overall machine name and resource group"
+}
+
 variable "location" {
 	type = string
   description = "The Azure Region in which all resources in this module"
