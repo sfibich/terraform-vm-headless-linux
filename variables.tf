@@ -10,7 +10,9 @@ variable "machine_number" {
 }
 
 variable "allowed_list_ips" {
+  type        = string
   description = "The IP addresses that will be allowed to talk to the workstation controlled by the NSG; simple comma-delimited list"
+  default     = null
 }
 
 variable "location" {

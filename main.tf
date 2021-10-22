@@ -81,13 +81,13 @@ resource "azurerm_subnet_network_security_group_association" "main" {
 }
 
 resource "azurerm_linux_virtual_machine" "main" {
-  name                            = "${var.prefix}-${var.machine_number}-ws"
-  resource_group_name             = azurerm_resource_group.main.name
-  location                        = azurerm_resource_group.main.location
-  size                            = "Standard_B1s"
-  admin_username                  = var.username
-  admin_password                  = var.password
-  disable_password_authentication = false
+  name                = "${var.prefix}-${var.machine_number}-ws"
+  resource_group_name = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
+  size                = "Standard_B1s"
+  admin_username      = var.username
+  #admin_password                  = var.password
+  #disable_password_authentication = false
   network_interface_ids = [
     azurerm_network_interface.main.id
   ]
@@ -96,6 +96,12 @@ resource "azurerm_linux_virtual_machine" "main" {
   }
 
   custom_data = base64encode(file("cloud-init-debian-11.sh"))
+
+  admin_ssh_key {
+    username   = "adminuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
+
 
   source_image_reference {
     publisher = "Debian"
